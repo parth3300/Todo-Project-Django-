@@ -1,0 +1,40 @@
+{% extends "base/main.html" %}
+{% block content %}
+
+{% if request.user.is_authenticated %}
+<h1>{{request.user}}</h1>
+<a href="{% url 'logout' %}">Log Out</a>
+{% else %}
+<a href="{% url 'login' %}">Log In</a>
+{% endif %}
+<hr>
+<h1>My TODO List</h1>
+
+<a href="{%url 'task-create'%}">Add Task {{color}}</a>
+<form method="GET">
+	<input type="text" name="search-area" value="{{ search_input }}">
+	<input type="submit" value="Search">
+</form>
+<table>
+	<tr>
+		<th>Item</th>
+		<th></th>
+		<th></th>
+
+	</tr>
+	{% for task in tasks%}
+	<tr>
+		<td>{{task.title}}</td>
+		<td><a href="{%url 'task' task.id%}">View Here</a></td>
+		<td><a href="{%url 'task-update' task.id%}">Edit</a></td>
+		<td><a href="{%url 'task-delete' task.id%}">Delete</a></td>
+	</tr>
+
+
+	{% empty %}
+	<h3>No items in list</h3>
+	{% endfor %}
+
+	<p>Number of incomplete tasks: {{ count }}</p>
+</table>
+{% endblock content %}
